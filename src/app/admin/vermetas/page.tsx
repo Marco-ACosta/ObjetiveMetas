@@ -28,11 +28,11 @@ export default function vermetasPagina() {
 
     const { userAuth } = useAuthContext();
     const router = useRouter();
-                                // codigo para criar um login required
+    // codigo para criar um login required
     if (userAuth == null) {
         router.push("/signIn");
-        return null; 
-      }
+        return null;
+    }
 
 
     useEffect(() => {
@@ -40,11 +40,11 @@ export default function vermetasPagina() {
             const unsubscribe = onValue(ref(db, "/metas"), (querySnapShot) => {
                 const metasData: IMeta = querySnapShot.val() || {};
                 const userMetas = Object.keys(metasData)
-                    .filter(key => metasData[key].id_usuario === user?.uid)
-                    .reduce((obj, key) => {
+                    .filter((key) => metasData[key].id_usuario === user?.uid)
+                    .reduce((obj: IMeta, key) => {
                         obj[key] = metasData[key];
                         return obj;
-                    }, {});
+                    }, {} as IMeta);
                 setMetas(userMetas);
                 setLoading(false);
             });
@@ -58,7 +58,7 @@ export default function vermetasPagina() {
             setLoading(false);
         }
     }, [user]);
-    
+
     function removerMeta(userId: string) {
         const metaRef = ref(db, `/metas/${userId}`);
         remove(metaRef);
@@ -93,5 +93,5 @@ export default function vermetasPagina() {
             </div>
         </div>
     );
-    
+
 }
